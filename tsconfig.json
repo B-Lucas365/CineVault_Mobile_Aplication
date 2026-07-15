@@ -1,8 +1,14 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["jest"]
+    "types": ["jest"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,   // acessar array/obj indexado pode ser undefined
+    "noImplicitOverride": true,          // exige 'override' explícito
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,        // import type consistente
+    "paths": { "@/*": ["./src/*"] }     // habilita o alias no TS (o Babel resolve em runtime)
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src", "index.js", "App.tsx"],
   "exclude": ["**/node_modules", "**/Pods"]
 }
