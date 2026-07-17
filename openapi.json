@@ -1,0 +1,1177 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Cria uma conta e retorna tokens",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Autentica e retorna tokens",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPairDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Rotaciona o par de tokens",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Revoga o refresh token informado",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retorna o usuário autenticado",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/users/me": {
+      "patch": {
+        "operationId": "UsersController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualiza o perfil do usuário",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/api/v1/users/me/settings": {
+      "get": {
+        "operationId": "UsersController_getSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSettingsEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retorna as settings do usuário",
+        "tags": [
+          "users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_updateSettings",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSettingsEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualiza (merge) as settings do usuário",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/api/v1/favorites": {
+      "get": {
+        "operationId": "FavoritesController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Itens por página. Acima de 50 é capado em 50.",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20,
+              "example": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "mediaType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "movie",
+              "enum": [
+                "movie",
+                "tv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FavoriteEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Lista a watchlist (paginada, filtro por mediaType)",
+        "tags": [
+          "favorites"
+        ]
+      },
+      "post": {
+        "operationId": "FavoritesController_add",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaSnapshotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoriteEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Adiciona à watchlist (idempotente: 200 se já existir)",
+        "tags": [
+          "favorites"
+        ]
+      }
+    },
+    "/api/v1/favorites/{tmdbId}": {
+      "delete": {
+        "operationId": "FavoritesController_remove",
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "mediaType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "movie",
+              "example": "movie",
+              "enum": [
+                "movie",
+                "tv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove da watchlist (idempotente)",
+        "tags": [
+          "favorites"
+        ]
+      }
+    },
+    "/api/v1/saved": {
+      "get": {
+        "operationId": "SavedController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Itens por página. Acima de 50 é capado em 50.",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20,
+              "example": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "mediaType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "movie",
+              "enum": [
+                "movie",
+                "tv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SavedEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Lista os salvos (paginada, filtro por mediaType)",
+        "tags": [
+          "saved"
+        ]
+      },
+      "post": {
+        "operationId": "SavedController_add",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaSnapshotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Salva um item (idempotente: 200 se já existir)",
+        "tags": [
+          "saved"
+        ]
+      }
+    },
+    "/api/v1/saved/{tmdbId}": {
+      "delete": {
+        "operationId": "SavedController_remove",
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "mediaType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "movie",
+              "example": "movie",
+              "enum": [
+                "movie",
+                "tv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove um salvo (idempotente)",
+        "tags": [
+          "saved"
+        ]
+      }
+    },
+    "/api/v1/continue-watching": {
+      "get": {
+        "operationId": "ContinueWatchingController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContinueWatchingEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Lista o rail Continue Watching (updatedAt desc)",
+        "tags": [
+          "continue-watching"
+        ]
+      }
+    },
+    "/api/v1/continue-watching/{tmdbId}": {
+      "put": {
+        "operationId": "ContinueWatchingController_upsert",
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertContinueWatchingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContinueWatchingEntity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cria ou atualiza o progresso (upsert)",
+        "tags": [
+          "continue-watching"
+        ]
+      },
+      "delete": {
+        "operationId": "ContinueWatchingController_remove",
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "mediaType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "movie",
+              "example": "movie",
+              "enum": [
+                "movie",
+                "tv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove do Continue Watching (idempotente)",
+        "tags": [
+          "continue-watching"
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "operationId": "HealthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "ok",
+                    "uptime": 123.4,
+                    "db": "up"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Liveness/readiness check",
+        "tags": [
+          "health"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "CineVault API",
+    "description": "Backend do CineVault — auth, settings, coleções.",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "Ada Lovelace",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "email": {
+            "type": "string",
+            "example": "ada@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "senhaForte123",
+            "minLength": 8
+          }
+        },
+        "required": [
+          "fullName",
+          "email",
+          "password"
+        ]
+      },
+      "UserEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "clx1abc000001"
+          },
+          "email": {
+            "type": "string",
+            "example": "ada@mail.com"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Ada Lovelace"
+          },
+          "avatarUrl": {
+            "type": "object",
+            "example": null,
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-01-15T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-01-15T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "fullName",
+          "avatarUrl",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          }
+        },
+        "required": [
+          "user",
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "ada@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "senhaForte123"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "TokenPairDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIs..."
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "Ada Byron",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "avatarUrl": {
+            "type": "string",
+            "example": "https://cdn.app/avatar.png",
+            "nullable": true
+          }
+        }
+      },
+      "UserSettingsEntity": {
+        "type": "object",
+        "properties": {
+          "theme": {
+            "type": "string",
+            "enum": [
+              "system",
+              "light",
+              "dark"
+            ],
+            "example": "system"
+          },
+          "language": {
+            "type": "string",
+            "example": "pt-BR"
+          },
+          "autoplayTrailers": {
+            "type": "boolean",
+            "example": true
+          },
+          "adultContent": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "theme",
+          "language",
+          "autoplayTrailers",
+          "adultContent"
+        ]
+      },
+      "UpdateSettingsDto": {
+        "type": "object",
+        "properties": {
+          "theme": {
+            "type": "string",
+            "enum": [
+              "system",
+              "light",
+              "dark"
+            ],
+            "example": "dark"
+          },
+          "language": {
+            "type": "string",
+            "example": "en-US"
+          },
+          "autoplayTrailers": {
+            "type": "boolean",
+            "example": false
+          },
+          "adultContent": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "FavoriteEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "clf1abc000001"
+          },
+          "tmdbId": {
+            "type": "number",
+            "example": 693134
+          },
+          "mediaType": {
+            "type": "string",
+            "enum": [
+              "movie",
+              "tv"
+            ],
+            "example": "movie"
+          },
+          "title": {
+            "type": "string",
+            "example": "Dune: Part Two"
+          },
+          "posterPath": {
+            "type": "object",
+            "example": "/poster.jpg",
+            "nullable": true
+          },
+          "backdropPath": {
+            "type": "object",
+            "example": "/backdrop.jpg",
+            "nullable": true
+          },
+          "releaseYear": {
+            "type": "object",
+            "example": 2024,
+            "nullable": true
+          },
+          "voteAverage": {
+            "type": "object",
+            "example": 8.4,
+            "nullable": true
+          },
+          "addedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-01-15T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "tmdbId",
+          "mediaType",
+          "title",
+          "posterPath",
+          "backdropPath",
+          "releaseYear",
+          "voteAverage",
+          "addedAt"
+        ]
+      },
+      "MediaSnapshotDto": {
+        "type": "object",
+        "properties": {
+          "tmdbId": {
+            "type": "number",
+            "example": 693134
+          },
+          "mediaType": {
+            "type": "string",
+            "enum": [
+              "movie",
+              "tv"
+            ],
+            "example": "movie"
+          },
+          "title": {
+            "type": "string",
+            "example": "Dune: Part Two"
+          },
+          "posterPath": {
+            "type": "object",
+            "example": "/poster.jpg",
+            "nullable": true
+          },
+          "backdropPath": {
+            "type": "object",
+            "example": "/backdrop.jpg",
+            "nullable": true
+          },
+          "releaseYear": {
+            "type": "object",
+            "example": 2024,
+            "nullable": true
+          },
+          "voteAverage": {
+            "type": "object",
+            "example": 8.4,
+            "nullable": true
+          }
+        },
+        "required": [
+          "tmdbId",
+          "mediaType",
+          "title"
+        ]
+      },
+      "SavedEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cls1abc000001"
+          },
+          "tmdbId": {
+            "type": "number",
+            "example": 693134
+          },
+          "mediaType": {
+            "type": "string",
+            "enum": [
+              "movie",
+              "tv"
+            ],
+            "example": "movie"
+          },
+          "title": {
+            "type": "string",
+            "example": "Dune: Part Two"
+          },
+          "posterPath": {
+            "type": "object",
+            "example": "/poster.jpg",
+            "nullable": true
+          },
+          "backdropPath": {
+            "type": "object",
+            "example": "/backdrop.jpg",
+            "nullable": true
+          },
+          "releaseYear": {
+            "type": "object",
+            "example": 2024,
+            "nullable": true
+          },
+          "voteAverage": {
+            "type": "object",
+            "example": 8.4,
+            "nullable": true
+          },
+          "savedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-01-15T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "tmdbId",
+          "mediaType",
+          "title",
+          "posterPath",
+          "backdropPath",
+          "releaseYear",
+          "voteAverage",
+          "savedAt"
+        ]
+      },
+      "ContinueWatchingEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "clc1abc000001"
+          },
+          "tmdbId": {
+            "type": "number",
+            "example": 12345
+          },
+          "mediaType": {
+            "type": "string",
+            "enum": [
+              "movie",
+              "tv"
+            ],
+            "example": "tv"
+          },
+          "title": {
+            "type": "string",
+            "example": "Shōgun"
+          },
+          "posterPath": {
+            "type": "object",
+            "example": "/poster.jpg",
+            "nullable": true
+          },
+          "progress": {
+            "type": "number",
+            "example": 0.62
+          },
+          "runtimeLeft": {
+            "type": "object",
+            "example": 42,
+            "nullable": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-01-15T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "tmdbId",
+          "mediaType",
+          "title",
+          "posterPath",
+          "progress",
+          "runtimeLeft",
+          "updatedAt"
+        ]
+      },
+      "UpsertContinueWatchingDto": {
+        "type": "object",
+        "properties": {
+          "mediaType": {
+            "type": "string",
+            "enum": [
+              "movie",
+              "tv"
+            ],
+            "example": "tv"
+          },
+          "title": {
+            "type": "string",
+            "example": "Shōgun"
+          },
+          "posterPath": {
+            "type": "object",
+            "example": "/poster.jpg",
+            "nullable": true
+          },
+          "progress": {
+            "type": "number",
+            "example": 0.62,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "runtimeLeft": {
+            "type": "object",
+            "example": 42,
+            "nullable": true
+          }
+        },
+        "required": [
+          "mediaType",
+          "title",
+          "progress"
+        ]
+      }
+    }
+  }
+}
