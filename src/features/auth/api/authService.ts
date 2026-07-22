@@ -1,5 +1,5 @@
 import {apiClient} from '@/api/client'
-import type {TokenPairDto, UserEntity} from '@/api/types'
+import type {AuthResponseDto, LoginDto, TokenPairDto, UserEntity} from '@/api/types'
 
 export const authService = {
     async refresh(refreshToken: string): Promise<TokenPairDto> {
@@ -13,5 +13,11 @@ export const authService = {
         })
 
         return data
+    },
+
+    async login(payload: LoginDto): Promise<AuthResponseDto> {
+        const {data} = await apiClient.post<AuthResponseDto>('/auth/login', payload)
+        return data
     }
+    
 }  
