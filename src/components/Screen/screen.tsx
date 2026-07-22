@@ -3,13 +3,14 @@ import { SafeAreaView, type Edge} from 'react-native-safe-area-context'
 import {colors} from '@/theme/tokens'
 
 interface Props extends ViewProps {
-    edges?: Edge[]
+    edges?: Edge[],
+    transparent?: boolean
 }
 
-export const Screen = ({children, style, edges = ['top', 'bottom']}: Props) => {
+export const Screen = ({children, style, edges = ['top', 'bottom'], transparent, ...rest}: Props) => {
     return (
-        <SafeAreaView style={styles.safe} edges={edges}>
-            <View style={[styles.content, style]}>
+        <SafeAreaView style={[styles.safe, transparent && {backgroundColor: 'transparent'}]} edges={edges}>
+            <View style={[styles.content, style]}{...rest}>
                 {children}
             </View>
         </SafeAreaView>

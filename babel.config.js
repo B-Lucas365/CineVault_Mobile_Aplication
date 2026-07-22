@@ -9,5 +9,6 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.json'],
       },
     ],
+    '@babel/plugin-transform-export-namespace-from'
   ],
 };

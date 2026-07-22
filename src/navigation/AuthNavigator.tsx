@@ -5,16 +5,9 @@ import { View } from "react-native";
 import { Text } from "@/components/Text/Text";
 import { colors } from "@/theme/tokens";
 import { Screen } from "@/components/Screen/screen";
+import { LoginScreen } from "@/features/auth/screens/LoginScreen";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>()
-
-const LoginPlaceholder = () => {
-    return (
-        <Screen style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>Login (placeholder)</Text>
-        </Screen>
-    )
-}
 
 function RegisterPlaceholder() {
     return (
@@ -27,7 +20,7 @@ function RegisterPlaceholder() {
   export const AuthNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Login" component={LoginPlaceholder}/>
+            <Stack.Screen name="Login" component={LoginScreen}/>
             <Stack.Screen name="Register" component={RegisterPlaceholder}/>
         </Stack.Navigator>
 

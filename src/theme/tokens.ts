@@ -12,6 +12,10 @@ export const colors = {
     buttonPrimaryBg: '#ffffff',
     buttonPrimaryText: '#000000',
     buttonSecondaryBg: 'rgba(28,28,30,0.6)',
+
+    glassCard: 'rgba(20,20,20,0.80)',
+    overlayGradientStart: 'rgba(0,0,0,0.5)',
+    overlayGradientEnd: 'rgba(0,0,0,0.85)',
   } as const;
   
   export const spacing = {
