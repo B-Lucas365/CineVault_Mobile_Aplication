@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ImageBackground, Platform, View } from "react-native";
 import {useForm, Controller} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
-import { Screen } from "@/components/Screen/screen";
 import { Text } from "@/components/Text/Text";
 import { Input } from "@/components/Input/Input";
 import { Button } from "@/components/Button/Button";
@@ -12,12 +11,11 @@ import { tokenService } from "@/lib/tokenService";
 import { useAuthStore } from "@/store/authStore";
 import { parseApiError } from "@/api/erros";
 import { StyleSheet } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 import { colors, radius, spacing } from "@/theme/tokens";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { AuthStackParamList } from "@/navigation/types";
+import { AuthBackground } from "@/components/AuthBackground/AuthBackground";
 
-const LOGIN_BACKGROUND = 'https://image.tmdb.org/t/p/w780/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>
 
@@ -48,22 +46,7 @@ export function LoginScreen({navigation}: Props) {
     }
 
     return (
-        <View style={{flex: 1, backgroundColor: colors.background}}>
-            <ImageBackground 
-            source={{uri: LOGIN_BACKGROUND}}
-            style={StyleSheet.absoluteFill}
-            blurRadius={Platform.select({ios: 20, android: 12})}
-            resizeMode="cover"
-      
-            >
-                <LinearGradient 
-                colors={[colors.overlayGradientStart, colors.overlayGradientEnd]}
-                style={StyleSheet.absoluteFill}
-                
-                />
-            </ImageBackground>
-    
-           <Screen transparent style={{padding: spacing.xl, justifyContent:'center'}}>
+        <AuthBackground>
             <View style={styles.card}>
                 <View style={styles.logoCircle}>
                     <Text variant="title">CV</Text>
@@ -132,12 +115,12 @@ export function LoginScreen({navigation}: Props) {
                     Sign up
                 </Text>
                 </Text>
-                
+
             </View>
-           </Screen>
-        </View>
+        </AuthBackground>
     )
 }
+
 
 
 const styles = StyleSheet.create({
