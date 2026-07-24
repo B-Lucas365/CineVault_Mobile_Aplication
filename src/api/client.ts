@@ -5,3 +5,8 @@ export const apiClient = axios.create({
     baseURL: Config.API_BASE_URL,
     timeout: 15000
 })
+
+export const refreshClient = axios.create({
+    baseURL: Config.API_BASE_URL,
+    timeout: 15000
+})

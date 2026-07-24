@@ -15,7 +15,7 @@ export async function bootstrapSession(): Promise<void> {
         const tokens = await authService.refresh(refreshToken)
         await tokenService.saveTokens(tokens.accessToken, tokens.refreshToken)
 
-        const user = await authService.me(tokens.accessToken)
+        const user = await authService.me()
         setSession(user)
 
     } catch {
