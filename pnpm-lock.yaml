@@ -23,6 +23,9 @@ importers:
       '@react-navigation/native-stack':
         specifier: ^7.17.10
         version: 7.17.10(@react-navigation/native@7.3.8(react-native@0.86.0(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@5.9.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-safe-area-context@5.8.0(react-native@0.86.0(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@5.9.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-screens@4.26.1(react-native@0.86.0(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@5.9.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@5.9.3))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      '@tanstack/react-query':
+        specifier: ^5.101.4
+        version: 5.101.4(react@19.2.3)
       axios:
         specifier: ^1.18.1
         version: 1.18.1
@@ -1160,6 +1163,14 @@ packages:
 
   '@standard-schema/utils@0.3.0':
     resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+
+  '@tanstack/query-core@5.101.4':
+    resolution: {integrity: sha512-gNwcvOJcRbLWPOLG/2OBm+zM+Yv+MKsXKEOWC57USuZDEsI71hEErQsiEGx5wX9rzWWkfwM0fVSPoiIFSsxfiw==}
+
+  '@tanstack/react-query@5.101.4':
+    resolution: {integrity: sha512-yRg2pfOCxIs4ZJW3XYYHU/WgtD04FHSnfHlpRT7h7pR77hwkdRG4wxbKe4aq6P0RvXUTBSQpQeadS1SUYUe+KA==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -5399,6 +5410,13 @@ snapshots:
       '@sinonjs/commons': 3.0.1
 
   '@standard-schema/utils@0.3.0': {}
+
+  '@tanstack/query-core@5.101.4': {}
+
+  '@tanstack/react-query@5.101.4(react@19.2.3)':
+    dependencies:
+      '@tanstack/query-core': 5.101.4
+      react: 19.2.3
 
   '@types/babel__core@7.20.5':
     dependencies:

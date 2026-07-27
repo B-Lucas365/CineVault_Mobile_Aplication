@@ -20,6 +20,10 @@ export const authService = {
     async register(payload: RegisterDto): Promise<AuthResponseDto> {
         const {data} = await apiClient.post<AuthResponseDto>("/auth/register", payload)
         return data
+    },
+
+    async logout(refreshToken: string): Promise<void> {
+        await apiClient.post('/auth/logout', {refreshToken})
     }
     
 }  

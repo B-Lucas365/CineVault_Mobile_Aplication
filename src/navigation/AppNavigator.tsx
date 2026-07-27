@@ -4,14 +4,19 @@ import { type AppStackParamList, type AppTabParamList } from "./types";
 import { View } from "react-native";
 import { Text } from "@/components/Text/Text";
 import { Screen } from "@/components/Screen/screen";
+import { Button } from "@/components/Button/Button";
+import { logout } from "@/features/auth/logout";
 
 const Stack = createNativeStackNavigator<AppStackParamList>()
 const Tab = createBottomTabNavigator<AppTabParamList>()
 
 function ScreenPlaceholder({ label }: { label: string }) {
     return (
-      <Screen style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>{label}</Text>
+        <Screen>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+          <Text>{label}</Text>
+          {label === 'Home' && <Button label="Sair" onPress={logout} />}
+        </View>
       </Screen>
     );
 }
@@ -19,7 +24,7 @@ function ScreenPlaceholder({ label }: { label: string }) {
 const Tabs = () => {
     return (
         <Tab.Navigator screenOptions={{headerShown: false}}>
-            <Tab.Screen name="Home">{() => <ScreenPlaceholder label="home"/>}</Tab.Screen>
+            <Tab.Screen name="Home">{() => <ScreenPlaceholder label="Home"/>}</Tab.Screen>
             <Tab.Screen name="Saved">{() => <ScreenPlaceholder label="Saved"/>}</Tab.Screen>
             <Tab.Screen name="Search">{() => <ScreenPlaceholder label="Search"/>}</Tab.Screen>
             <Tab.Screen name="Profile">{()=> <ScreenPlaceholder label="Profile"/>}</Tab.Screen>
