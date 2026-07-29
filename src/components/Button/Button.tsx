@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, ActivityIndicator } from "react-native";
+import { Pressable, StyleSheet, ActivityIndicator, View } from "react-native";
 import { Text } from "../Text/Text";
-import { colors, spacing, radius } from "@/theme/tokens";
+import { colors, spacing, radius } from "@/theme/tokens"
+import type {LucideIcon} from "lucide-react-native"
 
 type Variant = 'primary' | 'secondary'
 
@@ -10,10 +11,12 @@ interface Props {
     variant?: Variant;
     loading?: boolean;
     disabled?: boolean
+    icon?: LucideIcon
 }
 
-export const Button = ({label, onPress, variant = 'primary', loading, disabled}: Props) => {
+export const Button = ({label, onPress, variant = 'primary', loading, disabled, icon: Icon}: Props) => {
     const isPrimary = variant === 'primary'
+    const iconColor = isPrimary ? colors.buttonPrimaryText : colors.textPrimary;
 
     return (
         <Pressable
@@ -29,13 +32,17 @@ export const Button = ({label, onPress, variant = 'primary', loading, disabled}:
             {loading ? (
                 <ActivityIndicator color={isPrimary ? colors.buttonPrimaryText : colors.textPrimary}/>
             ) : (
-                <Text
-                variant='title'
-                color={isPrimary ? undefined : 'primary'}
-                style={isPrimary && {color: colors.buttonPrimaryText}}
-                >
-                    {label}
-                </Text>
+                <View style={styles.content}>
+                    {Icon && <Icon size={18} color={iconColor} strokeWidth={2.2} fill={iconColor}/>}
+                    <Text
+                    variant='title'
+                    color={isPrimary ? undefined : 'primary'}
+                    style={isPrimary && {color: colors.buttonPrimaryText}}
+                    >
+                        {label}
+                    </Text>
+                </View>
+                
             )}
 
         </Pressable>
@@ -61,6 +68,11 @@ const styles = StyleSheet.create({
     disabled: {
         opacity: 0.5
     }, 
-    pressed: {opacity: 0.8}
+    pressed: {opacity: 0.8},
+    content: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
+      },
 
 })

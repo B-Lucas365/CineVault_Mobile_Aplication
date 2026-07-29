@@ -6,6 +6,8 @@ import { Text } from "@/components/Text/Text";
 import { Screen } from "@/components/Screen/screen";
 import { Button } from "@/components/Button/Button";
 import { logout } from "@/features/auth/logout";
+import { HomeScreen } from "@/features/home/screens/HomeScreen";
+import { CustomTabBar } from "./components/CustomTabBar";
 
 const Stack = createNativeStackNavigator<AppStackParamList>()
 const Tab = createBottomTabNavigator<AppTabParamList>()
@@ -23,8 +25,11 @@ function ScreenPlaceholder({ label }: { label: string }) {
 
 const Tabs = () => {
     return (
-        <Tab.Navigator screenOptions={{headerShown: false}}>
-            <Tab.Screen name="Home">{() => <ScreenPlaceholder label="Home"/>}</Tab.Screen>
+        <Tab.Navigator 
+        screenOptions={{headerShown: false}}
+        tabBar={(props) => <CustomTabBar {...props}/>}
+        >
+            <Tab.Screen name="Home" component={HomeScreen}/>
             <Tab.Screen name="Saved">{() => <ScreenPlaceholder label="Saved"/>}</Tab.Screen>
             <Tab.Screen name="Search">{() => <ScreenPlaceholder label="Search"/>}</Tab.Screen>
             <Tab.Screen name="Profile">{()=> <ScreenPlaceholder label="Profile"/>}</Tab.Screen>
