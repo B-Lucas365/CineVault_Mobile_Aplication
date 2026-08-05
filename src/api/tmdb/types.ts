@@ -14,3 +14,9 @@ export interface TMDBPaginatedResponse<T> {
     total_page: number
     total_results: number
 }
+
+export interface TMDBPerson {
+    id: number,
+    name: string,
+    profile_path: string | null
+}
