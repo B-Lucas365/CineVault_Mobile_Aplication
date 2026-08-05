@@ -20,3 +20,13 @@ export interface TMDBPerson {
     name: string,
     profile_path: string | null
 }
+
+export interface TMDBSeries {
+    id: number,
+    name: string,
+    overview: string,
+    poster_path: string | null,
+    backdrop_path: string | null,
+    first_air_date: string,
+    vote_avarage: number,
+}
