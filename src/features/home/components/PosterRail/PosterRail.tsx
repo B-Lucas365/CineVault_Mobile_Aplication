@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
-import { View, FlatList, Image, Animated, StyleSheet, ActivityIndicator } from "react-native";
+import { View, FlatList, Image,  StyleSheet, ActivityIndicator, Pressable } from "react-native";
 import { Text } from "@/components/Text/Text";
 import { colors, radius, spacing } from "@/theme/tokens";
 import type {PosterItem} from "./types"
+import {FlashList} from "@shopify/flash-list"
 
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w342';
 const POSTER_WIDTH = 122;
@@ -12,9 +12,11 @@ interface Props {
     title: string,
     items: PosterItem[]
     isLoading?: boolean
+    isError?: boolean
+    onRetry?: () => void
 }
 
-export function PosterRail({title, items, isLoading}: Props) {
+export function PosterRail({title, items, isLoading, isError, onRetry}: Props) {
     return(
         <View style={{paddingTop: spacing.xl}}>
             <Text variant="title" style={{paddingHorizontal: spacing.xl, marginBottom: spacing.md}}>
@@ -22,16 +24,20 @@ export function PosterRail({title, items, isLoading}: Props) {
             </Text>
             {isLoading ? (
                 <SkeletonRow />
+            ) : isError ? (
+                <RetryRow onRetry={onRetry}/>
+            ) : items.length === 0 ? (
+                <EmptyRow />
             ) : (
-                <FlatList 
-                data={items}
-                keyExtractor={(item) => String(item.id)}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{gap: 13, paddingHorizontal: spacing.xl}}
-                renderItem={({item}) => <PosterCard item={item}/>}
-                
-                />
+               <FlashList 
+               data={items}
+               keyExtractor={(item) => String(item.id)}
+               horizontal
+               showsVerticalScrollIndicator={false}
+               contentContainerStyle={{paddingHorizontal: spacing.xl}}
+               ItemSeparatorComponent={() => <View style={{width: 13}}/>}
+               renderItem={({item}) => <PosterCard item={item}/>} 
+               />
             )} 
         </View>
     )
@@ -60,11 +66,33 @@ function SkeletonRow() {
 
 function SkeletonCard() {
     return(
-        <View style={[styles.card, { alignItems: 'center', justifyContent: 'center' }]}>
+        <View style={[styles.card, styles.centered]}>
             <ActivityIndicator color={colors.textTertiary} />
         </View>
     )
-  }
+}
+
+function RetryRow({onRetry}: {onRetry?: () => void}) {
+    return(
+        <View style={{paddingHorizontal: spacing.xl}}>
+            <Pressable
+            onPress={onRetry}
+            style={[styles.card, styles.centered, {width: '100%', height: 80}]}
+            >
+                <Text color="secondary">Não foi possivel carregar. toque para tentar de novo</Text>
+            </Pressable>
+        </View>
+    )
+}
+
+function EmptyRow() {
+    return (
+        <View style={{paddingHorizontal: spacing.xl}}>
+            <Text color="tertiary">Nada por aqui ainda.</Text>
+
+        </View>
+    )
+}
 
 const styles = StyleSheet.create({
     card: {
@@ -76,8 +104,9 @@ const styles = StyleSheet.create({
       borderColor: colors.border,
       overflow: 'hidden',
     },
+    centered: {alignItems: 'center', justifyContent: 'center'},
     image: {
       width: '100%',
       height: '100%',
     },
-  });
+});

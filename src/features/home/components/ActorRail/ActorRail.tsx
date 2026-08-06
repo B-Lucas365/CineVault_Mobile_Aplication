@@ -9,9 +9,11 @@ const AVATAR_SIZE = 72;
 interface Props {
     people: TMDBPerson[]
     isLoading?: boolean
+    isError?: boolean
+    onRetry?: () => void
 }
 
-export function ActorRail({people, isLoading}: Props) {
+export function ActorRail({people, isLoading, isError, onRetry}: Props) {
     return(
         <View style={{paddingTop: spacing.xxl}}>
             {isLoading ? (
@@ -19,6 +21,10 @@ export function ActorRail({people, isLoading}: Props) {
                 {[1, 2, 3, 4, 5].map((key) => (
                   <AvatarSkeleton key={key} />
                 ))}
+              </View>
+            ) : isError ? (
+              <View style={{paddingHorizontal: spacing.xl}}>
+                  <RetryTrip onRetry={onRetry}/>
               </View>
             ) : (
                 <FlatList 
@@ -56,11 +62,23 @@ function ActorAvatar({ person }: { person: TMDBPerson }) {
   function AvatarSkeleton() {
     return (
       <View style={styles.wrapper}>
-        <View style={[styles.circle, { alignItems: 'center', justifyContent: 'center' }]}>
+        <View style={[styles.circle, styles.centered]}>
           <ActivityIndicator size="small" color={colors.textTertiary} />
         </View>
       </View>
     );
+  }
+  
+  function  RetryTrip({onRetry}: {onRetry?: () => void}) {
+    return (
+      <Pressable
+      onPress={onRetry} style={[styles.wrapper, styles.centered, {height: AVATAR_SIZE}]}
+      >
+        <Text variant="caption" color="secondary" style={{textAlign: 'center'}}>
+          Tentar de novo
+        </Text>
+      </Pressable>
+    )
   }
   
   const styles = StyleSheet.create({
@@ -77,6 +95,7 @@ function ActorAvatar({ person }: { person: TMDBPerson }) {
       borderColor: colors.border,
       overflow: 'hidden',
     },
+    centered: {alignItems: 'center', justifyContent: 'center'},
     image: {
       width: '100%',
       height: '100%',

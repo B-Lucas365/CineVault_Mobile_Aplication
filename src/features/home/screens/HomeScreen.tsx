@@ -1,4 +1,4 @@
-import { ScrollView, ActivityIndicator, View } from 'react-native';
+import { ScrollView, ActivityIndicator, View, RefreshControl } from 'react-native';
 import { Screen } from '@/components/Screen/screen';
 import { Text } from '@/components/Text/Text';
 // import { HeroCarousel } from '../components/HeroCarousel';
@@ -9,11 +9,22 @@ import { PosterRail } from '../components/PosterRail/PosterRail';
 import { usePopularActors } from '../hooks/usePopularActors';
 import { ActorRail } from '../components/ActorRail/ActorRail';
 import { usePopularSeries } from '../hooks/usePopularSeries';
+import { useCallback, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function HomeScreen() {
-  const { data, isLoading, error } = usePopularMovies();
-  const {data: actorData, isLoading: isLoadingActor} = usePopularActors()
-  const { data: seriesData, isLoading: isLoadingSeries} = usePopularSeries()
+  const { data, isLoading, error, refetch: refetchMovies } = usePopularMovies();
+  const {data: actorData, isLoading: isLoadingActor, isError: isErrorActor, refetch: refetchActor} = usePopularActors()
+  const { data: seriesData, isLoading: isLoadingSeries, isError: isErrorSeries, refetch: refetchSeries} = usePopularSeries()
+  
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const insets = useSafeAreaInsets()
+
+  const handleRefresh = useCallback( async () => {
+    setIsRefreshing(true)
+    await Promise.all([refetchMovies(), refetchActor(), refetchSeries()])
+    setIsRefreshing(false)
+  }, [refetchMovies, refetchActor, refetchSeries])
 
   if (isLoading) {
     return (
@@ -37,19 +48,32 @@ export function HomeScreen() {
     posterPath: movie.poster_path
   }))
 
-  const seriesItems = (seriesData?.results ?? []).slice(0.10).map((series) => ({
+  const seriesItems = (seriesData?.results ?? []).slice(0, 10).map((series) => ({
     id: series.id,
     title: series.name,
-    posterPath: series.poster_path
+    posterPath: series.poster_path,
+    
   }))
 
   return (
     <Screen edges={[]} style={{ padding: 0 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: colors.background }}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.textPrimary}
+          colors={[colors.textPrimary]}
+          progressViewOffset={insets.top + 8}
+        />
+      }
+      >
         <HeroCarousel movies={data.results.slice(0, 8)} />
-        <ActorRail people={actorData?.results ?? []} isLoading={isLoadingActor}/>
-        <PosterRail title='Top Movies' items={posterItems} isLoading={isLoading}/>
-        <PosterRail title='Top Series' items={seriesItems} isLoading={isLoadingSeries}/>
+        <ActorRail people={actorData?.results ?? []} isLoading={isLoadingActor} isError={isErrorActor} onRetry={refetchActor}/>
+        <PosterRail title='Top Movies' items={posterItems} isLoading={isLoading} onRetry={refetchMovies}/>
+        <PosterRail title='Top Series' items={seriesItems} isLoading={isLoadingSeries} isError={isErrorSeries} onRetry={refetchSeries}/>
         <View style={{ height: 400 }} />
       </ScrollView>
     </Screen>
